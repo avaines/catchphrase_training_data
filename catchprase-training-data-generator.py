@@ -1,10 +1,9 @@
+from PIL import Image
 import argparse
 import cv2
 import numpy as np
-from PIL import Image
 import os
 import random
-
 
 
 def divide_image(image):
@@ -16,6 +15,7 @@ def divide_image(image):
         sections.extend(divided_row)
 
     return sections
+
 
 
 def apply_gaussian_blur(image, sections_to_blur, sections):
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--path", "-p", help="Path to the input image")
     parser.add_argument("--card", "-c", help="Path to the input image for the catchphrase card used for the overlay")
-    parser.add_argument("--number", "-n", help="Number of random images to generate", default=25)
+    parser.add_argument("--number", "-n", help="Number of random images to generate", default=5)
 
     args = parser.parse_args()
 
