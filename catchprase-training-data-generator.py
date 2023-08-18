@@ -60,7 +60,7 @@ def blur(image_path, sections_to_transform):
     blurred_image = apply_gaussian_blur(image, sections_to_transform, sections)
 
     transformed_filename = filename.replace('.', f'-{"-".join(map(str, sections_to_transform))}.')
-    transformed_path = os.path.dirname(image_path) + "/gaussian/"
+    transformed_path = os.path.dirname(image_path) + "/gaussian/" + filename.split(".")[0] + "/"
 
     if not os.path.exists(transformed_path):
         os.makedirs(transformed_path)
@@ -79,7 +79,7 @@ def overlay_cards(image_path, overlay_image_path, sections_to_overlay):
     overlaid_image = apply_overlay_cards(image, sections_to_overlay, overlay_image_path, sections)
 
     overlaid_filename = filename.replace('.', f'-{"-".join(map(str, sections_to_overlay))}.')
-    overlaid_path = os.path.dirname(image_path) + "/overlaid/"
+    overlaid_path = os.path.dirname(image_path) + "/overlaid/" + filename.split(".")[0] + "/"
 
     if not os.path.exists(overlaid_path):
         os.makedirs(overlaid_path)
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--path", "-p", help="Path to the input image")
     parser.add_argument("--card", "-c", help="Path to the input image for the catchphrase card used for the overlay")
-    parser.add_argument("--number", "-n", help="Number of random images to generate", default=5)
+    parser.add_argument("--number", "-n", help="Number of random images to generate", default=100)
 
     args = parser.parse_args()
 
@@ -110,4 +110,4 @@ if __name__ == "__main__":
 
         print("Generating image with the following sections blured:", str(list_without_replacement))
         blur(args.path, list_without_replacement)
-        overlay_cards(args.path, args.card, list_without_replacement)
+        # overlay_cards(args.path, args.card, list_without_replacement)
