@@ -1,4 +1,8 @@
+# Image Generation
 argparse
 opencv-python
 numpy
 Pillow
+
+# AI Model
+cognitive-service-vision-model-customization-python-samples

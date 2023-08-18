@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI:Catchphrase</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .catchphrase-body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .image-container {
+            position: relative;
+            text-align: center;
+        }
+
+        .grid-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            width: 732px;
+            height: 564px;
+        }
+
+        .box {
+            width: 244px;
+            height: 188px;
+            background-color: rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="catchphrase-body">
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='scapegoat.jpeg') }}" alt="Catchphrase Image" width="732" height="564">
+            <div class="grid-container">
+                {% for box_number in range(9) %}
+                    <div class="box" onclick="boxClicked({{ box_number }})"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        function boxClicked(boxNumber) {
+            $.post('/box_clicked', {box_number: boxNumber}, function(data) {
+                console.log(data);
+            });
+        }
+    </script>
+</body>
+</html>

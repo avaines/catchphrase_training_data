@@ -96,7 +96,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--path", "-p", help="Path to the input image")
     parser.add_argument("--card", "-c", help="Path to the input image for the catchphrase card used for the overlay")
-    parser.add_argument("--number", "-n", help="Number of random images to generate", default=100)
+    parser.add_argument("--number", "-n", help="Number of random images to generate", default=5)
 
     args = parser.parse_args()
 
@@ -109,5 +109,8 @@ if __name__ == "__main__":
         list_without_replacement.sort()
 
         print("Generating image with the following sections blured:", str(list_without_replacement))
-        blur(args.path, list_without_replacement)
-        # overlay_cards(args.path, args.card, list_without_replacement)
+        # blur(args.path, list_without_replacement)
+        overlay_cards(args.path, args.card, list_without_replacement)
+
+    # overlay_cards(args.path, args.card, [0,1,2,3,4,5,6,7,8])
+
