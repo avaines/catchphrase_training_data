@@ -30,7 +30,7 @@
         .box {
             width: 244px;
             height: 188px;
-            background-color: rgba(0, 0, 0, 0.3);
+            /* background-color: rgba(0, 0, 0, 0.3); */
             cursor: pointer;
         }
     </style>
@@ -38,20 +38,18 @@
 <body>
     <div class="catchphrase-body">
         <div class="image-container">
-            <img src="{{ url_for('static', filename='scapegoat.jpeg') }}" alt="Catchphrase Image" width="732" height="564">
+            <img src="{{ catchphrase_image }}" alt="Catchphrase Image" width="732" height="564">
             <div class="grid-container">
                 {% for box_number in range(9) %}
-                    <div class="box" onclick="boxClicked({{ box_number }})"></div>
+
+                <a href="{{ url_for('box_clicked', box_number=box_number) }}">
+                    <div class="box"></div>
+                </a>
+
                 {% endfor %}
             </div>
         </div>
     </div>
-    <script>
-        function boxClicked(boxNumber) {
-            $.post('/box_clicked', {box_number: boxNumber}, function(data) {
-                console.log(data);
-            });
-        }
-    </script>
+
 </body>
 </html>
