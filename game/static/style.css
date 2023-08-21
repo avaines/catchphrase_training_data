@@ -1,0 +1,58 @@
+.catchphrase-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.image-container {
+    position: relative;
+    /* text-align: center; */
+}
+
+.grid-container {
+    outline: 20px solid white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 732px;
+    height: 564px;
+}
+
+.grid-container-2{
+    outline: 5px solid black;
+}
+
+.box {
+    width: 244px;
+    height: 188px;
+    /* background-color: rgba(0, 0, 0, 0.3); */
+    cursor: pointer;
+}
+
+.p1 {
+    color: white;
+    background-color: red;
+    height: 150px;
+}
+
+
+.p2 {
+    color: white;
+    background-color: blue;
+    height: 150px;
+}
+
+.score {
+    font-size: 5em;
+    position: relative;
+    color: white;
+}
+
+body {
+    background-color: #e5e5f7;
+    background: repeating-linear-gradient( -45deg, #444cf7, #444cf7 5px, #e5e5f7 5px, #e5e5f7 25px );
+}
