@@ -7,6 +7,20 @@ import random
 
 app = Flask(__name__)
 
+class gameState:
+    def __init__(self):
+        catchphrases_dir = "./game/static/catchphrases/"
+        catchphrases = []
+        player_one_score = 0
+        player_two_score = 0
+        current_catchphrase_value = 1000
+
+        for file in os.listdir(catchphrases_dir):
+            if file.endswith('.png'):
+                catchphrases.append(file)
+        catchphrase_num = random.randint(0, len(catchphrases)-1)
+        current_image = catchphrases_dir + catchphrases[catchphrase_num]
+
 
 @app.route('/')
 def index():
@@ -29,7 +43,7 @@ def box_clicked(box_number):
     overlaid_image_pil.save("./game/static/game-image.png")
     catchphrase_filename = "./static/game-image.png"
 
-    return render_template("index.html", catchphrase_image="../" + catchphrase_filename)
+    return render_template("index.html", catchphrase_image="../" + catchphrase_filename, p1_score=player_one_score, p2_score=player_two_score, catchprase_value=current_catchphrase_value)
 
 
 def divide_image(image):
@@ -60,17 +74,10 @@ def apply_overlay_cards(image, sections_to_replace, replacement_image_path, sect
     return replaced_image
 
 
-
 if __name__ == '__main__':
     clicked_boxes = [0,1,2,3,4,5,6,7,8]
     catchphrase_filename = "./static/" + "base.png"
-    catchphrases_dir = "./game/static/catchphrases/"
-    catchphrases = []
-
-    for file in os.listdir(catchphrases_dir):
-        if file.endswith('.png'):
-            catchphrases.append(file)
-
-    current_image = catchphrases_dir + catchphrases[random.randint(1, len(catchphrases))]
+    
 
     app.run(debug=True)
+
