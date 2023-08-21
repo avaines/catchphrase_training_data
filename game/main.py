@@ -107,7 +107,7 @@ def reveal():
 def newgame():
     if len(Game.catchphrases) < 1:
         print("No more catchphrases")
-        return redirect("/", code=301)
+        return redirect("/", code=302)
     else:
         print("Catchphrases left:", len(Game.catchphrases))
         Game.selectCatchphrase()
