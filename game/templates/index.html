@@ -4,17 +4,34 @@
     <title>AI:Catchphrase</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
+        body {
+            background: repeating-linear-gradient(-45deg, white, white 35px, blue 35px, blue 40px);
+            height: 100vh;
+            padding: 20px;
+        }
+
         .catchphrase-body {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
-            height: 100vh;
             margin: 0;
+            position: relative;
+            gap: 50px;
+        }
+
+        .logo {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
         }
 
         .image-container {
             position: relative;
             text-align: center;
+            border: 20px solid white;
+            border-radius: 15px;
+            width: 732px;
+            height: 564px;
         }
 
         .grid-container {
@@ -33,9 +50,69 @@
             background-color: rgba(0, 0, 0, 0.3);
             cursor: pointer;
         }
+
+        .score-container {
+            align-self: flex-end;
+        }
+
+        .score-container h2 {
+            font-size: 48px;
+            margin-top: 0;
+        }
+
+        .score {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .score_item {
+            width: 160px;
+            padding: 20px;
+        }
+
+        .score_item h2 {
+            font-size: 48px;
+            text-decoration: underline;
+        }
+
+        .score_item div {
+            font-size: 48px;
+        }
+        .score_item_ai {
+            color: #ffff;
+            background-color: blue;
+            border: 1px solid blue;
+            border-radius: 15px;
+            box-shadow: 0px 3px 6px blue;
+        }
+
+        .score_item_human {
+            color: #ffff;
+            background-color: red;
+            border: 1px solid red;
+            border-radius: 15px;
+            box-shadow: 0px 3px 6px red;
+        }
+
+        .image-value {
+            background: aqua;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 15px;
+            width: 100px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
+    <div class="logo">
+        <img src="../static/logo.png" alt="Catchphrase logo" width="200px" />        
+    </div>
     <div class="catchphrase-body">
         <div class="image-container">
             <img src="{{ url_for('static', filename='scapegoat.jpeg') }}" alt="Catchphrase Image" width="732" height="564">
@@ -45,6 +122,21 @@
                 {% endfor %}
             </div>
         </div>
+        <div class="score-container">
+            <div class="score">
+                <div class="score_item score_item_human">
+                    <h2>Human</h2>
+                    <div>0</div>
+                </div>
+                <div class=" score_item score_item_ai">
+                    <h2>AI</h2>
+                    <div>0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="image-value">
+        <span>$750</span>
     </div>
     <script>
         function boxClicked(boxNumber) {
