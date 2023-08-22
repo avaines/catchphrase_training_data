@@ -4,6 +4,10 @@ import cv2
 import numpy as np
 import os
 import random
+from dotenv import load_dotenv
+from azure.identity import DefaultAzureCredential
+from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+
 
 app = Flask(__name__)
 
@@ -60,6 +64,20 @@ class gameState:
 
         return sections
 
+    def upload_blob_file(self, container_name: str, image_path: str):
+        # account_url = os.getenv("AZURE_STORAGE_ACCOUNT_NAME")
+        # credential = os.getenv("AZURE_STORAGE_SAS_TOKEN")
+        # blob_service_client = BlobServiceClient(account_url, credential=credential)
+
+        blob_sas_url=os.getenv("AZURE_BLOB_SAS_URL")
+        blob_service_client = BlobServiceClient(blob_sas_url)
+
+        container_client = blob_service_client.get_container_client(container=container_name)
+
+        with open(file=image_path, mode="rb") as data:
+            blob_client = container_client.upload_blob(name="ai-game-image.png", data=data, overwrite=True)
+
+        return blob_client.url
 
     def reveal(self, clicked_boxes: list):
         for clicked_box in clicked_boxes:
@@ -69,12 +87,21 @@ class gameState:
         image = cv2.imread(self.current_image)
         sections = self.divide_image(image)
 
-        overlaid_image = self.apply_overlay_cards(image, self.hidden_boxes, "./game/static/catchphrase-bjss-block.png", sections)
+        # The AI should only have a black overlaid box
+        ai_overlaid_image_path="./game/static/ai-game-image.png"
+        ai_overlaid_image = self.apply_overlay_cards(image, self.hidden_boxes, "./game/static/catchphrase-black-block.jpg", sections)
+        ai_overlaid_image_pil = Image.fromarray(ai_overlaid_image)
+        ai_overlaid_image_pil.save(ai_overlaid_image_path)
 
+        # Humans want something a bit more pretty
+        overlaid_image = self.apply_overlay_cards(image, self.hidden_boxes, "./game/static/catchphrase-bjss-block.png", sections)
         overlaid_image_pil = Image.fromarray(overlaid_image)
         overlaid_image_pil.save("./game/static/game-image.png")
+
         self.catchphrase_filename = "/static/game-image.png"
 
+        uploaded_ai_blob_url = self.upload_blob_file(container_name="game-images", image_path=ai_overlaid_image_path)
+        print(uploaded_ai_blob_url)
 
 @app.route('/')
 def index():
@@ -117,8 +144,10 @@ def newgame():
         return render_template("index.html", catchphrase_image="/static/base.png", p1_score=Game.scores[0], p2_score=Game.scores[1], catchprase_value=Game.current_catchphrase_value)
 
 if __name__ == '__main__':
+    load_dotenv()
     Game = gameState()
     Game.selectCatchphrase()
+
     print("Current Catchphrase is:", Game.current_image)
     app.run(debug=True, port=5001)
 
