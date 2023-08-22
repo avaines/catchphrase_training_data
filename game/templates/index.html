@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="tv-set">
-                <img src="/static/set-tighter.png" />
+                <img src="/static/set.png" />
             </div>
             <div class="game-image">
                 <img src="{{ catchphrase_image }}" alt="Catchphrase Image" width="732" height="564">
@@ -45,7 +45,7 @@
             </div>
             <div class="speech">
                 <img src="  /static/speech_360.png" />
-                <div class="speech-bubble">Speech Speech Speech Speech</div>
+                <div class="speech-bubble">{{ai_guess}}</div>
             </div>
             <div class="buttons-set">
                 <div class="buttons">
@@ -55,7 +55,7 @@
                 <div class="buttons">
             		{% for player_number in range(2) %}
 			            <button class="btn btn-primary btn-lg" onclick="location.href='{{ url_for('award_player', player_number=player_number) }}'">Award Player {{player_number+1}}</button>
-		            {% endfor %}        
+		            {% endfor %}
                 </div>
             </div>
         </div>

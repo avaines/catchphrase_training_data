@@ -31,6 +31,7 @@ body {
     grid-template-columns: repeat(3, 1fr);
     width: 732px;
     height: 564px;
+    z-index: 5
 }
 
 .p_score_1 {
