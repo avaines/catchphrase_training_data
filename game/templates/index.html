@@ -1,74 +1,126 @@
-<!DOCTYPE html>
 <html>
 <head>
     <title>AI:Catchphrase</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/style.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
-<body>
-    <div class="row">
-        <div class="col-md-12">
-            <img src="/static/logo.png" alt="BJSS AI:Catchphrase logo" style="width:200px;"/>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="image-container" width="732" height="564">
-                            <img src="{{ catchphrase_image }}" alt="Catchphrase Image">
-                            <div class="grid-container">
-                                {% for box_number in range(9) %}
-                                <a href="{{ url_for('box_clicked', box_number=box_number) }}">
-                                    <div class="box"></div>
-                                </a>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        SCORE {{ catchprase_value }}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8">
-            </div>
-            <div class="col-md-2 p1">
-                P1 Score
-                <div class="score">
-                    £{{ p1_score }}
-                </div>
-            </div>
-            <div class="col-md-2 p2">
-                P2 Score
-                <div class="score">
-                    £{{ p2_score }}
-                </div>
-            </div>
-        </div>
-    </div>
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top" style="background-color: lightgray;">
-        <div class="col-md-4 d-flex align-items-center">
-          <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-            <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-          </a>
-          <span class="mb-3 mb-md-0 text-muted">© 2023 BJSS</span>
-        </div>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<!-- Save for Web Slices (Catchphrase.psd) -->
+<table id="Table_01" width="1601" height="1153" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td colspan="9">
+			<img src="/static/layout-assets/Catchphrase_01.gif" width="1600" height="212" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="1" height="212" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="6">
+			<img src="/static/layout-assets/Catchphrase_02.gif" width="163" height="940" alt=""></td>
+			<td colspan="3">
+				<div class="image-container" width="732" height="564">
+					<img src="{{ catchphrase_image }}" alt="Catchphrase Image">
+					<div class="grid-container">
+						{% for box_number in range(9) %}
+						<a href="{{ url_for('box_clicked', box_number=box_number) }}">
+							<div class="box"></div>
+						</a>
+						{% endfor %}
+					</div>
+				</div>
+			</td>
+		<td colspan="5" rowspan="2">
+			<img src="/static/layout-assets/Catchphrase_04.gif" width="705" height="598" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="1" height="564" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<img src="/static/layout-assets/Catchphrase_05.gif" width="732" height="34" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="1" height="34" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="4">
+			<img src="/static/layout-assets/Catchphrase_06.gif" width="366" height="342" alt=""></td>
+			<td style="background-color: rgb(14, 16, 18);">
+				<div class="score">
+					£{{ catchprase_value }}
+				</div>
+			</td>
+		<td colspan="2" rowspan="4">
+			<img src="/static/layout-assets/Catchphrase_08.gif" width="448" height="342" alt=""></td>
+			<td rowspan="2" style="background-color: rgb(14, 16, 18);">
+				<div class="p_score">
+					£{{ p1_score }}
+				</div>
+			</td>
+		<td colspan="3">
+			<img src="/static/layout-assets/Catchphrase_10.gif" width="411" height="42" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="1" height="42" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="3">
+			<img src="/static/layout-assets/Catchphrase_11.gif" width="82" height="300" alt=""></td>
+		<td rowspan="3">
+			<img src="/static/layout-assets/Catchphrase_12.gif" width="106" height="300" alt=""></td>
+			<td rowspan="2" style="background-color: rgb(14, 16, 18);">
+				<div class="p_score">
+					£{{ p2_score }}
+				</div>
+			</td>
+		<td rowspan="3">
+			<img src="/static/layout-assets/Catchphrase_14.gif" width="167" height="300" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="1" height="24" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="2">
+			<img src="/static/layout-assets/Catchphrase_15.gif" width="130" height="276" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="1" height="32" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="/static/layout-assets/Catchphrase_16.gif" width="138" height="244" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="1" height="244" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="163" height="1" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="366" height="1" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="82" height="1" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="284" height="1" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="164" height="1" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="130" height="1" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="106" height="1" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="138" height="1" alt=""></td>
+		<td>
+			<img src="/static/layout-assets/spacer.gif" width="167" height="1" alt=""></td>
+		<td></td>
+	</tr>
+</table>
+<!-- End Save for Web Slices -->
 
-        <ul class="nav col-md-4 justify-content-centre list-unstyled d-flex">
-            <button type="button" onclick="location.href='/newgame'">New Catchphrase</button>
-            <button type="button" onclick="location.href='/reveal'">Reveal</button>
+<ul class="nav col-md-4 justify-content-centre list-unstyled d-flex">
+		<button type="button" onclick="location.href='/newgame'">New Catchphrase</button>
+		<button type="button" onclick="location.href='/reveal'">Reveal</button>
 
-            {% for player_number in range(2) %}
-                <button type="button" onclick="location.href='{{ url_for('award_player', player_number=player_number) }}'">Award Player {{player_number+1}}</button>
-            {% endfor %}
+		{% for player_number in range(2) %}
+			<button type="button" onclick="location.href='{{ url_for('award_player', player_number=player_number) }}'">Award Player {{player_number+1}}</button>
+		{% endfor %}
+</ul>
 
-
-        </ul>
-      </footer>
 </body>
 </html>
