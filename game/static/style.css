@@ -1,40 +1,132 @@
-.image-container {
-    position: relative;
-    /* text-align: center; */
+body {
+    background-color: #090A09;
 }
 
-body{
-    background-color: rgb(14, 16, 18);
+.root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
-.grid-container {
-    /* outline: 20px solid white; */
+
+.game {
+    position: relative;
+    top: 300px;
+}
+
+.image-container {
+    position: relative;
+}
+
+.game-image {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 173px;
+    left: 169px;
+    transform: matrix3d(1.05, -0.01, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+}
+
+.grid-container {
+    position: absolute;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     width: 732px;
     height: 564px;
 }
 
-.p_score {
-    font-size: 3em;
-    position: relative;
+.p_score_1 {
+    font-size: 45px;
+    position: absolute;
     align-items: center;
     color: rgb(187,187,101);
     background-color: rgb(14, 16, 18);
+    top: 763px;
+    left: 1059px;
+    transform: skew(-1deg, 8deg);
+    z-index: 2
 }
 
-
-.p2 {
-    color: white;
-    background-color: blue;
-    height: 150px;
+.p_score_2 {
+    font-size: 45px;
+    position: absolute;
+    align-items: center;
+    color: rgb(187,187,101);
+    background-color: rgb(14, 16, 18);
+    top: 802px;
+    left: 1296px;
+    transform: skew(-3deg, 8deg);
+    z-index: 2
 }
 
 .score {
-    font-size: 1.5em;
-    position: relative;
+    font-size: 34px;
+    position: absolute;
     color: rgb(187,187,101);
     background-color: rgb(14, 16, 18);
+    top: 760px;
+    left: 516px;
+    transform: rotate(-2deg);
+    z-index: 2
+}
+
+.stripes {
+    position: absolute;
+    left: 968px;
+    top: -134px;
+}
+
+.left-spices-1 {
+    position: absolute;
+    left: 0;
+    top: 627px;
+}
+
+.left-spices-2 {
+    position: absolute;
+    left: 1016px;
+    top: 460px;
+}
+
+.tv-set {
+    position: relative;
+    z-index: 1;
+}
+
+.buttons-set {
+    position: absolute;
+    top: 1096px;
+    z-index: 2;
+    display: flex;
+    gap: 10px;
+}
+
+.buttons {
+    min-width: 191px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.speech {
+    position: absolute;
+    top: 450px;
+    left: 1358px;
+    z-index: 2;
+}
+
+.speech-bubble {
+    position: absolute;
+    top: 32px;
+    left: 45px;
+    width: 237px;
+    height: 113px;
+    border-radius: 90px;
+    color: rgb(187,187,101);
+    font-size: 20px;
+    word-wrap: break-word;
+    padding-left: 20px;
+    padding-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
