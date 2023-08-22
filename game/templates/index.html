@@ -9,19 +9,23 @@
     </head>
 <body>
     <div class="root">
-        <div class="stripes">
-            <img src="../static/set-stripes.png" />
-        </div>
-        <div class="left-spices-1">
-            <img src="../static/set-left-spacer.png" />
-        </div>
-        <div class="left-spices-2">
-            <img src="../static/set-left-spacer.png" />
-        </div>
         <div class="game">
-            <img src="../static/game.png" />
+            <div class="background-set">
+                <div class="stripes">
+                    <img src="/static/set-stripes.png" />
+                </div>
+                <div class="left-spices-1">
+                    <img src="/static/set-left-spacer.png" />
+                </div>
+                <div class="left-spices-2">
+                    <img src="/static/set-left-spacer.png" />
+                </div>
+            </div>
+            <div class="tv-set">
+                <img src="/static/set-tighter.png" />
+            </div>
             <div class="game-image">
-                <img src="../static/game-image.png" alt="Catchphrase Image" width="732" height="564">
+                <img src="{{ catchphrase_image }}" alt="Catchphrase Image" width="732" height="564">
             </div>
             <div class="grid-container game-image">
                 {% for box_number in range(9) %}
@@ -31,14 +35,29 @@
                 {% endfor %}
             </div>
             <div class="score">
-			    £100
-			</div>
+                £{{ catchprase_value }}
+            </div>
             <div class="p_score_1">
-				£1000
-			</div>
+                £{{ p1_score }}
+            </div>
             <div class="p_score_2">
-				£2000
-			</div>
+                £{{ p2_score }}
+            </div>
+            <div class="speech">
+                <img src="  /static/speech_360.png" />
+                <div class="speech-bubble">Speech Speech Speech Speech</div>
+            </div>
+            <div class="buttons-set">
+                <div class="buttons">
+                    <button class="btn btn-primary btn-lg" onclick="location.href='/newgame'">New Catchphrase</button>
+                    <button class="btn btn-primary btn-lg" onclick="location.href='/reveal'">Reveal</button>
+                </div>
+                <div class="buttons">
+            		{% for player_number in range(2) %}
+			            <button class="btn btn-primary btn-lg" onclick="location.href='{{ url_for('award_player', player_number=player_number) }}'">Award Player {{player_number+1}}</button>
+		            {% endfor %}        
+                </div>
+            </div>
         </div>
     </div>
 </body>
