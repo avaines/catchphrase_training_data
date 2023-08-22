@@ -1,0 +1,40 @@
+.image-container {
+    position: relative;
+    /* text-align: center; */
+}
+
+body{
+    background-color: rgb(14, 16, 18);
+}
+.grid-container {
+    /* outline: 20px solid white; */
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 732px;
+    height: 564px;
+}
+
+.p_score {
+    font-size: 3em;
+    position: relative;
+    align-items: center;
+    color: rgb(187,187,101);
+    background-color: rgb(14, 16, 18);
+}
+
+
+.p2 {
+    color: white;
+    background-color: blue;
+    height: 150px;
+}
+
+.score {
+    font-size: 1.5em;
+    position: relative;
+    color: rgb(187,187,101);
+    background-color: rgb(14, 16, 18);
+}

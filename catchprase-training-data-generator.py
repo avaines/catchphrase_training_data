@@ -110,7 +110,7 @@ if __name__ == "__main__":
 
         print("Generating image with the following sections blured:", str(list_without_replacement))
         # blur(args.path, list_without_replacement)
-        overlay_cards(args.path, args.card, list_without_replacement)
+        # overlay_cards(args.path, args.card, list_without_replacement)
 
-    # overlay_cards(args.path, args.card, [0,1,2,3,4,5,6,7,8])
+    overlay_cards(args.path, args.card, [0,1,2,3,4,5,6,7,8])
 
