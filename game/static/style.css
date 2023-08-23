@@ -11,7 +11,8 @@ body {
 
 .game {
     position: relative;
-    top: 300px;
+    top: 37px;
+    transform: scale(0.7);
 }
 
 .image-container {
@@ -21,7 +22,7 @@ body {
 .game-image {
     position: absolute;
     top: 173px;
-    left: 169px;
+    left: 180px;
     transform: matrix3d(1.05, -0.01, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 }
 
@@ -31,7 +32,7 @@ body {
     grid-template-columns: repeat(3, 1fr);
     width: 732px;
     height: 564px;
-    z-index: 5
+    z-index: 5;
 }
 
 .p_score_1 {
@@ -43,7 +44,9 @@ body {
     top: 763px;
     left: 1059px;
     transform: skew(-1deg, 8deg);
-    z-index: 2
+    z-index: 2;
+    width: 131px;
+    text-align: center;
 }
 
 .p_score_2 {
@@ -55,7 +58,9 @@ body {
     top: 802px;
     left: 1296px;
     transform: skew(-3deg, 8deg);
-    z-index: 2
+    z-index: 2;
+    width: 145px;
+    text-align: center;
 }
 
 .score {
@@ -66,7 +71,9 @@ body {
     top: 760px;
     left: 516px;
     transform: rotate(-2deg);
-    z-index: 2
+    z-index: 2;
+    width: 105px;
+    text-align: center;
 }
 
 .stripes {
