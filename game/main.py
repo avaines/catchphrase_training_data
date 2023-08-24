@@ -1,11 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for
-from PIL import Image
 import cv2
+import json
 import numpy as np
 import os
 import random
-from dotenv import load_dotenv
+import requests
 from azure.storage.blob import BlobServiceClient
+from dotenv import load_dotenv
+from flask import Flask, render_template, request, redirect, url_for
+from PIL import Image
 
 
 app = Flask(__name__)
@@ -13,6 +15,7 @@ app = Flask(__name__)
 class gameState:
     def __init__(self):
         self.hidden_boxes = []
+        self.current_catchphrase_name = ""
         self.catchphrase_filename = "/static/base.png"
         self.catchphrases_dir = "./game/static/catchphrases/"
         self.ai_catchphrase_filename = self.catchphrase_filename
@@ -35,6 +38,7 @@ class gameState:
         self.current_catchphrase_value = 1000
         self.hidden_boxes = [0,1,2,3,4,5,6,7,8]
         self.catchphrase_filename = "/static/base.png"
+        self.current_catchphrase_name = os.path.basename(self.current_image).split(".")[0].replace("-"," ")
 
 
     def apply_overlay_cards(self, image, sections_to_replace, replacement_image_path, sections):
@@ -63,6 +67,7 @@ class gameState:
             sections.extend(divided_row)
 
         return sections
+
 
     def reveal(self, clicked_boxes: list):
         for clicked_box in clicked_boxes:
@@ -98,6 +103,16 @@ def upload_blob_file(container_name: str, image_path: str):
     return blob_client.url
 
 
+def send_slack_message(catchphrase, bot_response):
+    webhook = os.getenv("SLACK_WEBHOOK_URL")
+    payload = {
+            "catchphrase": catchphrase,
+            "bot_response": bot_response
+        }
+
+    requests.post(webhook, json.dumps(payload))
+
+
 # Routes
 @app.route('/')
 def index():
@@ -109,8 +124,10 @@ def box_clicked(box_number):
     Game.reveal([box_number])
     Game.current_catchphrase_value -= 100
 
-    uploaded_ai_blob_url = upload_blob_file(container_name="game-images", image_path="./game/"+Game.ai_catchphrase_filename)
-    print(uploaded_ai_blob_url)
+    # uploaded_ai_blob_url = upload_blob_file(container_name="game-images", image_path="./game/"+Game.ai_catchphrase_filename)
+    # print(uploaded_ai_blob_url)
+
+    send_slack_message(catchphrase=Game.current_catchphrase_name, bot_response="")
 
     return render_template("index.html", catchphrase_image=Game.catchphrase_filename, p1_score=Game.scores[0], p2_score=Game.scores[1], catchprase_value=Game.current_catchphrase_value, ai_guess="")
 
