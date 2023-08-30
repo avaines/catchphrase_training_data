@@ -112,7 +112,7 @@ def call_catchphrase_ai_api(image_url):
     print(f"Calling catchphrase API with: {image_url}")
     incorrect_guesses = [x for x in Game.ai_catchphrase_incorrect_guesses if x]
 
-    url = "https://bjss-catchphrase.azurewebsites.net/api/catchphrase"
+    url = os.getenv("VISION_API_URL")
     params = {
         "imageUrl": image_url,
         "incorrectAnswers": ", ".join(incorrect_guesses),
