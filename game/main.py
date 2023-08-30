@@ -9,22 +9,24 @@ from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for
 from PIL import Image
 
-
 app = Flask(__name__)
 
 class gameState:
     def __init__(self):
-        self.hidden_boxes = []
-        self.current_catchphrase_name = ""
         self.catchphrase_filename = "/static/base.png"
-        self.catchphrases_dir = "./game/static/catchphrases/"
         self.ai_catchphrase_filename = self.catchphrase_filename
+
+        self.ai_catchphrase_guess = ""
+        self.ai_catchphrase_incorrect_guesses = []
         self.catchphrases = []
-        self.scores = [0, 0]
+        self.catchphrases_dir = "./game/static/catchphrases/"
+        self.current_catchphrase_name = ""
+        self.current_catchphrase_value = 0
         self.current_image = ""
+        self.hidden_boxes = []
         self.player_one_score = 0
         self.player_two_score = 0
-        self.current_catchphrase_value = 0
+        self.scores = [0, 0]
 
         for file in os.listdir(self.catchphrases_dir):
             if file.endswith('.png'):
@@ -97,17 +99,41 @@ def upload_blob_file(container_name: str, image_path: str):
 
     container_client = blob_service_client.get_container_client(container=container_name)
 
-    with open(file=image_path, mode="rb") as data:
-        blob_client = container_client.upload_blob(name="ai-game-image.png", data=data, overwrite=True)
+    try:
+        with open(file=image_path, mode="rb") as data:
+            blob_client = container_client.upload_blob(name="ai-game-image.png", data=data, overwrite=True)
 
-    return blob_client.url
+        return blob_client.url
+    except:
+        print("Unable to upload image, check 'AZURE_BLOB_SAS_URL' token environmental variable")
 
 
-def send_slack_message(catchphrase, bot_response):
+def call_catchphrase_ai_api(image_url):
+    print(f"Calling catchphrase API with: {image_url}")
+    incorrect_guesses = [x for x in Game.ai_catchphrase_incorrect_guesses if x]
+
+    url = "https://bjss-catchphrase.azurewebsites.net/api/catchphrase"
+    params = {
+        "imageUrl": image_url,
+        "incorrectAnswers": ", ".join(incorrect_guesses),
+        "code": os.getenv("VISION_API_KEY")
+    }
+
+    response = requests.get(url, params=params)
+
+    if response.status_code == 200:
+        send_slack_message(message=f"AI Guess: :robot_face: {response.text}")
+        return response.text
+
+    else:
+        print(f"Request failed with status code: {response.status_code}")
+        return "I don't know"
+
+
+def send_slack_message(message):
     webhook = os.getenv("SLACK_WEBHOOK_URL")
     payload = {
-            "catchphrase": catchphrase,
-            "bot_response": bot_response
+            "message": message,
         }
 
     requests.post(webhook, json.dumps(payload))
@@ -121,13 +147,14 @@ def index():
 
 @app.route('/box_clicked/<box_number>')
 def box_clicked(box_number):
-    Game.reveal([box_number])
-    Game.current_catchphrase_value -= 100
+    if int(box_number) in Game.hidden_boxes:
+        Game.reveal([box_number])
+        Game.current_catchphrase_value -= 100
 
-    # uploaded_ai_blob_url = upload_blob_file(container_name="game-images", image_path="./game/"+Game.ai_catchphrase_filename)
-    # print(uploaded_ai_blob_url)
+        uploaded_ai_blob_url = upload_blob_file(container_name="game-images", image_path="./game/"+Game.ai_catchphrase_filename)
 
-    send_slack_message(catchphrase=Game.current_catchphrase_name, bot_response="")
+        Game.ai_catchphrase_incorrect_guesses.append(Game.ai_catchphrase_guess) # The current AI guess must be incorrect
+        Game.ai_catchphrase_guess = call_catchphrase_ai_api(uploaded_ai_blob_url.split("?")[0])
 
     return render_template("index.html", catchphrase_image=Game.catchphrase_filename, p1_score=Game.scores[0], p2_score=Game.scores[1], catchprase_value=Game.current_catchphrase_value, ai_guess="")
 
@@ -142,7 +169,12 @@ def award_player(player_number):
 @app.route('/reveal')
 def reveal():
     Game.reveal([0,1,2,3,4,5,6,7,8])
-    return render_template("index.html", catchphrase_image=Game.catchphrase_filename, p1_score=Game.scores[0], p2_score=Game.scores[1], catchprase_value=Game.current_catchphrase_value, ai_guess="")
+    return render_template("index.html", catchphrase_image=Game.catchphrase_filename, p1_score=Game.scores[0], p2_score=Game.scores[1], catchprase_value=Game.current_catchphrase_value, ai_guess=Game.ai_catchphrase_guess)
+
+
+@app.route('/ai_guess')
+def ai_guess():
+    return render_template("index.html", catchphrase_image=Game.catchphrase_filename, p1_score=Game.scores[0], p2_score=Game.scores[1], catchprase_value=Game.current_catchphrase_value, ai_guess=Game.ai_catchphrase_guess)
 
 
 @app.route('/newgame')
@@ -155,6 +187,10 @@ def newgame():
         Game.selectCatchphrase()
         Game.current_catchphrase_value = 1000
         Game.hidden_boxes=[0,1,2,3,4,5,6,7,8]
+        Game.ai_catchphrase_incorrect_guesses = []
+
+        send_slack_message(message=f" ")
+        send_slack_message(message=f"Catchphrase: :speaker: {Game.current_catchphrase_name} :speaker:")
 
         return render_template("index.html", catchphrase_image="/static/base.png", p1_score=Game.scores[0], p2_score=Game.scores[1], catchprase_value=Game.current_catchphrase_value, ai_guess="")
 
@@ -165,4 +201,4 @@ if __name__ == '__main__':
     Game.selectCatchphrase()
 
     print("Current Catchphrase is:", Game.current_image)
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5000)
