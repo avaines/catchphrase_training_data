@@ -126,8 +126,8 @@ def call_catchphrase_ai_api(image_url):
         return response.text
 
     else:
-        print(f"Request failed with status code: {response.status_code}")
-        return "I don't know"
+        send_slack_message(message=f"AI Guess: :robot_face: Request failed with status code: {response.status_code}")
+        return ''
 
 
 def send_slack_message(message):
@@ -201,4 +201,4 @@ if __name__ == '__main__':
     Game.selectCatchphrase()
 
     print("Current Catchphrase is:", Game.current_image)
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5001)
