@@ -199,6 +199,11 @@ if __name__ == '__main__':
     load_dotenv()
     Game = gameState()
     Game.selectCatchphrase()
+    Game.current_catchphrase_value = 1000
+    Game.hidden_boxes=[0,1,2,3,4,5,6,7,8]
+    Game.ai_catchphrase_incorrect_guesses = []
+
+    send_slack_message(message=f"Catchphrase: :speaker: {Game.current_catchphrase_name} :speaker:")
 
     print("Current Catchphrase is:", Game.current_image)
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=80)

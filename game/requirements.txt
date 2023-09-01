@@ -1,4 +1,7 @@
-flask
-azure-storage-blob
 azure-identity
+azure-storage-blob
+flask
+opencv-python
+Pillow
 python-dotenv
+json
