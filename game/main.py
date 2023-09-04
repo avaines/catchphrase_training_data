@@ -29,7 +29,7 @@ class gameState:
         self.scores = [0, 0]
 
         for file in os.listdir(self.catchphrases_dir):
-            if file.endswith('.png'):
+            if file.endswith('.jpg'):
                 self.catchphrases.append(file)
 
 
@@ -115,7 +115,8 @@ def call_catchphrase_ai_api(image_url):
     url = os.getenv("VISION_API_URL")
     params = {
         "imageUrl": image_url,
-        "incorrectAnswers": ", ".join(incorrect_guesses),
+        # "incorrectAnswers": ", ".join(incorrect_guesses),
+        "incorrectAnswers": "",
         "code": os.getenv("VISION_API_KEY")
     }
 
@@ -194,10 +195,10 @@ def newgame():
 
         return render_template("index.html", catchphrase_image="/static/base.png", p1_score=Game.scores[0], p2_score=Game.scores[1], catchprase_value=Game.current_catchphrase_value, ai_guess="")
 
+Game = gameState()
 
 if __name__ == '__main__':
     load_dotenv()
-    Game = gameState()
     Game.selectCatchphrase()
     Game.current_catchphrase_value = 1000
     Game.hidden_boxes=[0,1,2,3,4,5,6,7,8]
@@ -206,4 +207,4 @@ if __name__ == '__main__':
     send_slack_message(message=f"Catchphrase: :speaker: {Game.current_catchphrase_name} :speaker:")
 
     print("Current Catchphrase is:", Game.current_image)
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
