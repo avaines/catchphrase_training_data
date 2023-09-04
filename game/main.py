@@ -206,4 +206,4 @@ if __name__ == '__main__':
     send_slack_message(message=f"Catchphrase: :speaker: {Game.current_catchphrase_name} :speaker:")
 
     print("Current Catchphrase is:", Game.current_image)
-    app.run(debug=True, port=80)
+    app.run(debug=True)

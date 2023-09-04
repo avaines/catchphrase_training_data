@@ -4,4 +4,3 @@ flask
 opencv-python
 Pillow
 python-dotenv
-json
