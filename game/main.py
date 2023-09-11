@@ -157,7 +157,7 @@ def box_clicked(box_number):
         Game.ai_catchphrase_incorrect_guesses.append(Game.ai_catchphrase_guess) # The current AI guess must be incorrect
         Game.ai_catchphrase_guess = call_catchphrase_ai_api(uploaded_ai_blob_url.split("?")[0])
 
-    return render_template("index.html", catchphrase_image=Game.catchphrase_filename, p1_score=Game.scores[0], p2_score=Game.scores[1], catchprase_value=Game.current_catchphrase_value, ai_guess="")
+    return render_template("index.html", catchphrase_image=Game.catchphrase_filename, p1_score=Game.scores[0], p2_score=Game.scores[1], catchprase_value=Game.current_catchphrase_value, ai_guess=Game.ai_catchphrase_guess)
 
 
 @app.route('/award_player/<player_number>')
@@ -207,4 +207,4 @@ if __name__ == '__main__':
     send_slack_message(message=f"Catchphrase: :speaker: {Game.current_catchphrase_name} :speaker:")
 
     print("Current Catchphrase is:", Game.current_image)
-    app.run(debug=True, port=5001)
+    app.run(debug=True)
