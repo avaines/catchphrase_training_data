@@ -81,16 +81,18 @@ class gameState:
 
         # The AI should only have a black overlaid box
         ai_overlaid_image = self.apply_overlay_cards(image, self.hidden_boxes, "./game/static/catchphrase-black-block.jpg", sections)
+        ai_overlaid_image = cv2.cvtColor(ai_overlaid_image, cv2.COLOR_BGR2RGB)
         ai_overlaid_image_pil = Image.fromarray(ai_overlaid_image)
-        ai_overlaid_image_pil.save("./game/static/ai-game-image.png")
+        ai_overlaid_image_pil.save("./game/static/ai-game-image.jpg")
 
         # Humans want something a bit more pretty
-        overlaid_image = self.apply_overlay_cards(image, self.hidden_boxes, "./game/static/catchphrase-bjss-block.png", sections)
+        overlaid_image = self.apply_overlay_cards(image, self.hidden_boxes, "./game/static/catchphrase-bjss-block.jpg", sections)
+        overlaid_image = cv2.cvtColor(overlaid_image, cv2.COLOR_BGR2RGB)
         overlaid_image_pil = Image.fromarray(overlaid_image)
-        overlaid_image_pil.save("./game/static/game-image.png")
+        overlaid_image_pil.save("./game/static/game-image.jpg")
 
-        self.catchphrase_filename = "/static/game-image.png"
-        self.ai_catchphrase_filename="/static/ai-game-image.png"
+        self.catchphrase_filename = "/static/game-image.jpg"
+        self.ai_catchphrase_filename="/static/ai-game-image.jpg"
 
 
 def upload_blob_file(container_name: str, image_path: str):
@@ -101,7 +103,7 @@ def upload_blob_file(container_name: str, image_path: str):
 
     try:
         with open(file=image_path, mode="rb") as data:
-            blob_client = container_client.upload_blob(name="ai-game-image.png", data=data, overwrite=True)
+            blob_client = container_client.upload_blob(name="ai-game-image.jpg", data=data, overwrite=True)
 
         return blob_client.url
     except:
@@ -170,6 +172,11 @@ def award_player(player_number):
 @app.route('/reveal')
 def reveal():
     Game.reveal([0,1,2,3,4,5,6,7,8])
+
+    uploaded_ai_blob_url = upload_blob_file(container_name="game-images", image_path="./game/"+Game.ai_catchphrase_filename)
+    Game.ai_catchphrase_incorrect_guesses.append(Game.ai_catchphrase_guess)
+    Game.ai_catchphrase_guess = call_catchphrase_ai_api(uploaded_ai_blob_url.split("?")[0])
+
     return render_template("index.html", catchphrase_image=Game.catchphrase_filename, p1_score=Game.scores[0], p2_score=Game.scores[1], catchprase_value=Game.current_catchphrase_value, ai_guess=Game.ai_catchphrase_guess)
 
 
@@ -194,6 +201,19 @@ def newgame():
         send_slack_message(message=f"Catchphrase: :speaker: {Game.current_catchphrase_name} :speaker:")
 
         return render_template("index.html", catchphrase_image="/static/base.png", p1_score=Game.scores[0], p2_score=Game.scores[1], catchprase_value=Game.current_catchphrase_value, ai_guess="")
+
+@app.route('/reset')
+def reset():
+    Game = gameState()
+    Game.current_catchphrase_value = 1000
+    Game.hidden_boxes=[0,1,2,3,4,5,6,7,8]
+    Game.ai_catchphrase_incorrect_guesses = []
+
+    send_slack_message(message=f"Catchphrase: :speaker: {Game.current_catchphrase_name} :speaker:")
+
+    print("Current Catchphrase is:", Game.current_image)
+    return render_template("index.html", catchphrase_image="/static/base.png", p1_score=Game.scores[0], p2_score=Game.scores[1], catchprase_value=Game.current_catchphrase_value, ai_guess="")
+
 
 Game = gameState()
 
