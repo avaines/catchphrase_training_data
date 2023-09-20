@@ -9,4 +9,4 @@ while IFS= read -r file_name; do
     echo "Resizing: ${file_name}"
     FILENAME_NO_EXT=$(echo ${file_name}| cut -d "." -f 2)
     convert "${file_name}" -resize 732x564! "resized/${FILENAME_NO_EXT}.jpg"
-done < <(find ./ -type f \( -name "*.jpeg" -o -name "*.png" \) -maxdepth 1 | grep -v "${exclusion_file}")
+done < <(find ./ -type f \( -name "*.jpeg" -o -name "*.jpg" -o -name "*.png" \) -maxdepth 1 | grep -v "${exclusion_file}")

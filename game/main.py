@@ -77,17 +77,16 @@ class gameState:
                 self.hidden_boxes.remove(int(clicked_box))
 
         image = cv2.imread(self.current_image)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         sections = self.divide_image(image)
 
         # The AI should only have a black overlaid box
         ai_overlaid_image = self.apply_overlay_cards(image, self.hidden_boxes, "./game/static/catchphrase-black-block.jpg", sections)
-        ai_overlaid_image = cv2.cvtColor(ai_overlaid_image, cv2.COLOR_BGR2RGB)
         ai_overlaid_image_pil = Image.fromarray(ai_overlaid_image)
         ai_overlaid_image_pil.save("./game/static/ai-game-image.jpg")
 
         # Humans want something a bit more pretty
         overlaid_image = self.apply_overlay_cards(image, self.hidden_boxes, "./game/static/catchphrase-bjss-block.jpg", sections)
-        overlaid_image = cv2.cvtColor(overlaid_image, cv2.COLOR_BGR2RGB)
         overlaid_image_pil = Image.fromarray(overlaid_image)
         overlaid_image_pil.save("./game/static/game-image.jpg")
 
